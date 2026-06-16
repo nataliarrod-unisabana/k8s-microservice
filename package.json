@@ -1,0 +1,16 @@
+{
+  "name": "k8s-microservice",
+  "version": "1.0.0",
+  "description": "Microservicio basico en Express para el taller de despliegue con Docker, Helm y ArgoCD",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node --watch src/server.js"
+  },
+  "dependencies": {
+    "express": "^4.19.2"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

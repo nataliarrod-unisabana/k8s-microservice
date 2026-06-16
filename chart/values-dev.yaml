@@ -1,0 +1,8 @@
+replicaCount: 1
+
+env:
+  appEnv: "development"
+  appVersion: "1.0.0-dev"
+
+service:
+  type: NodePort

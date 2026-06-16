@@ -1,0 +1,23 @@
+replicaCount: 1
+
+image:
+  repository: k8s-microservice
+  tag: "1.0.0"
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 80
+  targetPort: 3000
+
+env:
+  appEnv: "default"
+  appVersion: "1.0.0"
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 200m
+    memory: 128Mi

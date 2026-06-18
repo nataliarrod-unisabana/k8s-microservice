@@ -14,8 +14,9 @@ Proyecto desarrollado para el taller de Arquitectura de Software (Trabajo K8S).
 4. [Estructura del proyecto](#estructura-del-proyecto)
 5. [Flujo CI/CD + GitOps](#flujo-cicd--gitops)
 6. [Decisiones técnicas](#decisiones-técnicas)
-7. [Cómo reproducirlo](#cómo-reproducirlo)
-8. [Endpoints](#endpoints)
+7. [Evolución futura](#evolución-futura)
+8. [Cómo reproducirlo](#cómo-reproducirlo)
+9. [Endpoints](#endpoints)
 
 ---
 
@@ -151,6 +152,20 @@ ArgoCD está configurado con sincronización automática, **prune** (elimina rec
 ### Optimización del disparo del pipeline
 
 El pipeline ignora cambios sobre `chart/values.yaml` y `README.md` mediante `paths-ignore`. Ignorar `values.yaml` es **necesario** para evitar un bucle infinito: como el propio pipeline modifica ese archivo y hace commit, sin esta exclusión ese commit volvería a disparar el pipeline indefinidamente. Ignorar `README.md` es una **optimización**: evita reconstruir y redesplegar la imagen cuando solo cambia la documentación, ahorrando ejecuciones innecesarias.
+
+---
+
+## Evolución futura
+
+La implementación actual es un flujo GitOps de un solo entorno con imágenes inmutables etiquetadas por SHA. En un contexto de producción con múltiples entornos, la arquitectura evolucionaría hacia los siguientes patrones, ampliamente adoptados en la industria:
+
+### Promoción de versiones entre entornos
+
+En lugar de un único despliegue, se mantendrían entornos separados (por ejemplo `dev`, `staging` y `prod`), cada uno con su propio tag de imagen en su archivo de valores. Una versión nueva se desplegaría automáticamente en `dev`; tras ser validada, la **misma imagen** se promovería a los siguientes entornos actualizando su tag. Esto garantiza que lo que llega a producción es exactamente lo que se probó, sin reconstrucciones intermedias. La promoción a producción sería un paso deliberado (manual o aprobado), no automático.
+
+### Separación del repositorio de configuración
+
+Siguiendo las buenas prácticas de GitOps a mayor escala, el repositorio de código de la aplicación se separaría del repositorio de configuración del despliegue (estado deseado del clúster). El pipeline de CI construiría la imagen y actualizaría el repositorio de configuración, que ArgoCD observaría como fuente de verdad. Esta separación ofrece un historial de despliegues auditable, evita que el pipeline modifique el propio repositorio de código, y desacopla el ciclo de vida del código del de la infraestructura.
 
 ---
 

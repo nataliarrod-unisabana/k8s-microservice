@@ -1,9 +1,9 @@
 replicaCount: 1
 
 image:
-  repository: k8s-microservice
+  repository: ghcr.io/nataliarrod-unisabana/k8s-microservice
   tag: "1.0.0"
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
 
 service:
   type: ClusterIP

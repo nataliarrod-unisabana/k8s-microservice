@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: ghcr.io/nataliarrod-unisabana/k8s-microservice
-  tag: "1.0.0"
+  tag: "bd71b31865fb6d28b7fd2d0b01156073ede64dba"
   pullPolicy: Always
 
 service:

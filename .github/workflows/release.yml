@@ -6,6 +6,7 @@ on:
       - main
     paths-ignore:
       - 'chart/values.yaml'
+      - 'README.md'
 
 permissions:
   contents: write
